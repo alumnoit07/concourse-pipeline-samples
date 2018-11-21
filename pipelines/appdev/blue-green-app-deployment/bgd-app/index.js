@@ -55,20 +55,27 @@ app.get('/metric', function(req, res) {   // serve image files
             body: payload
           }, function (error, response, body) {
             if(error) return res.send(error);
+            //if(error) return;
 
             if(response.statusCode != "200") {
                 console.error('Error sending custom message :', payload);
-                //return res.send(response);
-                return;
+                
+                return res.send(response);
+
+                /*console.log('Status:', response.statusCode);
+                console.log('Headers:', JSON.stringify(response.headers));
+                console.log('Response:', body);
+
+                return;*/
             }
 
             console.log('Status:', response.statusCode);
             console.log('Headers:', JSON.stringify(response.headers));
             console.log('Response:', body);
 
-            console.log('The commandd was correctly', data);
+            console.log('The commandd was correctly', payload);
 
-            //res.send(data);
+            res.send(payload);
           });
 });
 
