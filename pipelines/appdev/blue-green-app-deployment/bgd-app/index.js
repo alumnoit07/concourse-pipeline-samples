@@ -22,7 +22,7 @@ app.get('/metric', function(req, res) {   // serve custom metrics
   var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name": "", "application_version": "", "application_uris": ""}';
   var app_obj = JSON.parse(vcap_app)
 
-  // custom payload metrics
+  // custom metrics payload
   var data = { "applications": [{
                "id": "[app_guid]",
                "instances": [{
@@ -51,29 +51,23 @@ app.get('/metric', function(req, res) {   // serve custom metrics
   // send custom message to Metrics Forwarder for PCFll
   request({ method: 'POST',
             url: 'https://metrics-forwarder.run.pivotal.io/v1/metrics',
-            headers: {'Content-Type': "application/json", 'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
+            headers: {'Content-Type': "application/json", 
+                      'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
             body: payload
           }, function (error, response, body) {
             if(error) return res.send(error);
-            //if(error) return;
 
             if(response.statusCode != "200") {
-                console.error('Error sending custom message :', response);
-                
+                console.error('Error response: ', response);
+
                 return res.send(response);
-
-                /*console.log('Status:', response.statusCode);
-                console.log('Headers:', JSON.stringify(response.headers));
-                console.log('Response:', body);
-
-                return;*/
             }
 
-            console.log('Status:', response.statusCode);
-            console.log('Headers:', JSON.stringify(response.headers));
-            console.log('Response:', body);
+            console.log('Status: ', response.statusCode);
+            console.log('Headers: ', JSON.stringify(response.headers));
+            console.log('Response: ', body);
 
-            console.log('The commandd was correctly', payload);
+            console.log('The custom metric was correctly sent: ', payload);
 
             res.send(payload);
           });
