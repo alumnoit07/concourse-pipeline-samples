@@ -39,19 +39,19 @@ app.get('/metric', function(req, res) {   // serve image files
               }]
             };
 
-  data.applications[0].id = app_obj.application_name;
-  data.applications[0].instances[0].id = app_obj.application_version;
+  data.applications[0].id = "f652475f-0702-4766-9879-4a9f2cdae5a9";
+  data.applications[0].instances[0].id = "b5561202-ebb1-40f3-7865-ce04";
   data.applications[0].instances[0].metrics[0].name = "a-metric";
   data.applications[0].instances[0].metrics[0].value = 0;
-  data.applications[0].instances[0].metrics[0].timestamp = 1094817600000;
-  data.applications[0].instances[0].metrics[0].unit = "number";
+  data.applications[0].instances[0].metrics[0].timestamp = 1542819282000;
+  data.applications[0].instances[0].metrics[0].unit = "seconds";
 
   var payload = JSON.stringify(data);
 
   // send custom message to Metrics Forwarder for PCFll
   request({ method: 'POST',
             url: 'https://metrics-forwarder.run.pivotal.io/v1/metrics',
-            headers: {'Authorization': "d1eebbed-1e2c-40ce-5e41-b3458b4b1d31"},
+            headers: {'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
             body: payload
           }, function (error, response, body) {
             if(error) return res.send(error);
