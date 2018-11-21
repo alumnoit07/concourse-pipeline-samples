@@ -51,7 +51,7 @@ app.get('/metric', function(req, res) {   // serve custom metrics
   // send custom message to Metrics Forwarder for PCFll
   request({ method: 'POST',
             url: 'https://metrics-forwarder.run.pivotal.io/v1/metrics',
-            headers: {'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
+            headers: {'Content-Type': "application/json", 'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
             body: payload
           }, function (error, response, body) {
             if(error) return res.send(error);
