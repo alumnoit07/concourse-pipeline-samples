@@ -40,7 +40,7 @@ app.get('/metric', function(req, res) {   // serve custom metrics
             };
 
   data.applications[0].id = "f652475f-0702-4766-9879-4a9f2cdae5a9";
-  data.applications[0].instances[0].id = "b5561202-ebb1-40f3-7865-ce04";
+  data.applications[0].instances[0].id = "5698a3f9-753f-44e6-5887-d73a";
   data.applications[0].instances[0].metrics[0].name = "a-metric";
   data.applications[0].instances[0].metrics[0].value = 0;
   data.applications[0].instances[0].metrics[0].timestamp = 1542819282000;
