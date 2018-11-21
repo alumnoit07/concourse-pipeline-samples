@@ -58,7 +58,8 @@ app.get('/metric', function(req, res) {   // serve image files
 
             if(response.statusCode != "200") {
                 console.error('Error sending custom message :', payload);
-                return res.send(response);
+                //return res.send(response);
+                return;
             }
 
             console.log('Status:', response.statusCode);
@@ -67,7 +68,7 @@ app.get('/metric', function(req, res) {   // serve image files
 
             console.log('The commandd was correctly', data);
 
-            res.send(data);
+            //res.send(data);
           });
 });
 
