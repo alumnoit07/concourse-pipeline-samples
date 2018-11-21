@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(methodOverride());
 
-app.get('/metric', function(req, res) {   // serve image files
-  var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name":"","application_version":"","application_uris":""}';
+app.get('/metric', function(req, res) {   // serve custom metrics
+  var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name": "", "application_version": "", "application_uris": ""}';
   var app_obj = JSON.parse(vcap_app)
 
   // custom payload metrics
@@ -87,7 +87,7 @@ app.get('/images/*', function(req, res) {   // serve image files
   res.end(img, 'binary');
 });
 
-app.all('/', function(req, res) {   // serve all other requests
+app.get('/', function(req, res) {   // serve main request
   var vcap_app=process.env.VCAP_APPLICATION || '{ "application_name":"","application_version":"","application_uris":""}';
   var app_obj = JSON.parse(vcap_app)
   var icon_name = (app_obj.application_name.indexOf("blue")>= 0)?"Blue-station.png":"Green-station.png";
@@ -103,7 +103,6 @@ app.all('/', function(req, res) {   // serve all other requests
   res.write("<hr><p>Current time: "+new Date().toString()+"</p><hr/>");
   res.write("</body></html>");
   res.end("\n");
-
 });
 
 var server = http.createServer(app);
