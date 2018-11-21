@@ -5,7 +5,8 @@ var express = require('express'),
   methodOverride = require('method-override'),
   logger = require('morgan'),
   fs = require('fs'),
-  url = require('url');
+  url = require('url'),
+  request = require('request');
 
 var app = express();
 
@@ -16,6 +17,59 @@ app.set('port', app_port_number);
 app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(methodOverride());
+
+app.get('/metric', function(req, res) {   // serve image files
+  var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name":"","application_version":"","application_uris":""}';
+  var app_obj = JSON.parse(vcap_app)
+
+  // custom payload metrics
+  var data = { "applications": [{
+               "id": "[app_guid]",
+               "instances": [{
+                  "id": "[instance_guid]",
+                  "index": "0",
+                  "metrics": [{
+                    "name": "[metric_name]",
+                    "type": "gauge",
+                    "value": "[metric_value]",
+                    "timestamp": "[timestamp]",
+                    "unit": "[metric_unit]"
+                  }]
+                }]
+              }]
+            };
+
+  data.applications[0].id = app_obj.application_name;
+  data.applications[0].instances[0].id = app_obj.application_version;
+  data.applications[0].instances[0].metrics[0].name = "a-metric";
+  data.applications[0].instances[0].metrics[0].value = 0;
+  data.applications[0].instances[0].metrics[0].timestamp = 1094817600000;
+  data.applications[0].instances[0].metrics[0].unit = "number";
+
+  var payload = JSON.stringify(data);
+
+  // send custom message to Metrics Forwarder for PCFll
+  request({ method: 'POST',
+            url: 'https://metrics-forwarder.run.pivotal.io/v1/metrics',
+            headers: {'Authorization': "d1eebbed-1e2c-40ce-5e41-b3458b4b1d31"},
+            body: payload
+          }, function (error, response, body) {
+            if(error) return res.send(error);
+
+            if(response.statusCode != "200") {
+                console.error('Error sending custom message :', payload);
+                return res.send(response);
+            }
+
+            console.log('Status:', response.statusCode);
+            console.log('Headers:', JSON.stringify(response.headers));
+            console.log('Response:', body);
+
+            console.log('The commandd was correctly', data);
+
+            res.send(data);
+          });
+});
 
 app.get('/images/*', function(req, res) {   // serve image files
   var request = url.parse(req.url, true);
