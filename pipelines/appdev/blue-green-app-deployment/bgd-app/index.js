@@ -48,11 +48,12 @@ app.get('/metric', function(req, res) {   // serve custom metrics
 
   var payload = JSON.stringify(data);
 
+  //console.log('Payload: ', payload);
+
   // send custom message to Metrics Forwarder for PCFll
   request({ method: 'POST',
             url: 'https://metrics-forwarder.run.pivotal.io/v1/metrics',
-            headers: {'Content-Type': "application/json", 
-                      'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
+            headers: {'Content-Type': "application/json", 'Authorization': "96b4111e-daf2-40ba-4117-4f0e23b658b6"},
             body: payload
           }, function (error, response, body) {
             if(error) return res.send(error);
@@ -60,7 +61,7 @@ app.get('/metric', function(req, res) {   // serve custom metrics
             if(response.statusCode != "200") {
                 console.error('Error response: ', response);
 
-                return res.send(response);
+                return res.send(response);                
             }
 
             console.log('Status: ', response.statusCode);
