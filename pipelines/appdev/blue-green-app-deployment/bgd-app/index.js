@@ -19,32 +19,25 @@ app.use(logger('dev'));
 app.use(methodOverride());
 
 app.get('/metric', function(req, res) {   // serve custom metrics
-  var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name": "", "application_version": "", "application_uris": ""}';
-  var app_obj = JSON.parse(vcap_app)
+  //var vcap_app = process.env.VCAP_APPLICATION || '{ "application_name": "", "application_version": "", "application_uris": ""}';
+  //var app_obj = JSON.parse(vcap_app)
 
   // custom metrics payload
   var data = { "applications": [{
-               "id": "[app_guid]",
+               "id": "f652475f-0702-4766-9879-4a9f2cdae5a9",
                "instances": [{
-                  "id": "[instance_guid]",
+                  "id": "5698a3f9-753f-44e6-5887-d73a",
                   "index": "0",
                   "metrics": [{
-                    "name": "[metric_name]",
+                    "name": "a-metric",
                     "type": "gauge",
-                    "value": "[metric_value]",
-                    "timestamp": "[timestamp]",
-                    "unit": "[metric_unit]"
+                    "value": 0
+                    "timestamp": 1542819282000,
+                    "unit": "seconds"
                   }]
                 }]
               }]
             };
-
-  data.applications[0].id = "f652475f-0702-4766-9879-4a9f2cdae5a9";
-  data.applications[0].instances[0].id = "5698a3f9-753f-44e6-5887-d73a";
-  data.applications[0].instances[0].metrics[0].name = "a-metric";
-  data.applications[0].instances[0].metrics[0].value = 0;
-  data.applications[0].instances[0].metrics[0].timestamp = 1542819282000;
-  data.applications[0].instances[0].metrics[0].unit = "seconds";
 
   var payload = JSON.stringify(data);
 
