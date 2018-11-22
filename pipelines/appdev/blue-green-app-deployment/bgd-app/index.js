@@ -31,7 +31,7 @@ app.get('/metric', function(req, res) {   // serve custom metrics
                   "metrics": [{
                     "name": "a-metric",
                     "type": "gauge",
-                    "value": 0
+                    "value": 0,
                     "timestamp": 1542819282000,
                     "unit": "seconds"
                   }]
