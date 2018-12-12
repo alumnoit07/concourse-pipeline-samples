@@ -11,7 +11,7 @@ resources:
   type: git
   source:
     branch: master
-    uri: https://github.com/masalinas/concourse-pipeline-samples.git
+    uri: https://github.com/alumnoit07/concourse-pipeline-samples.git
 - name: PWS
   type: cf
   source:
@@ -75,11 +75,6 @@ jobs:
       PWS_USER: {{deploy-username}}
       PWS_PWD: {{deploy-password}}
       PWS_SPACE: {{pws-space}}
-  - task: run-load-tests
-    file: concourse-pipeline-samples/pipelines/appdev/blue-green-app-deployment/ci/tasks/load-tests.yml
-    params:
-      PWS_APP_SUFFIX: {{pws-app-suffix}}
-      PWS_APP_DOMAIN: {{pws-app-domain}}
 
 - name: promote-new-version
   serial: true
